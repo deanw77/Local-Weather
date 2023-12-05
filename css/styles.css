@@ -1,0 +1,14 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+    background: linear-gradient(0deg, rgba(191,192,255,1) 0%, rgba(0,14,135,1) 100%);
+    padding: 20px;
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 4px black;
+}
