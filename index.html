@@ -26,12 +26,71 @@
   </head>
 
   <body>
-    <header>
-
+    <header class="navbar bg-primary">
+        <div class="container">
+            <h1>Local Weather</h1>
+        </div>   
     </header>
-    <main>
 
+    <main>
+        <div class="container d-flex flex-wrap justify-content-between">
+            <section id="searchCityMenu" class="col-12 col-sm-4 col-md-3">
+                <form class="d-flex justify-content-between mt-3">
+                    <input type="text" class="col-8">
+                    <button class="col-3 bg-primary">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+                <hr>
+                <section id="searchItems">
+                    <section class=" col-12 d-flex flex-wrap justify-content-between">
+                        <div class="col-6 col-sm-12 btn bg-primary">Corby</div>
+                        <div class="col-6 col-sm-12 btn bg-primary">Kings Lynn</div>
+                        <div class="col-6 col-sm-12 btn bg-primary">New York</div>
+                        <div class="col-6 col-sm-12 btn bg-primary">London</div>
+                        <div class="col-6 col-sm-12 btn bg-primary">Kettering</div>
+                        <div class="col-6 col-sm-12 btn bg-primary">Newcastle</div>
+                    </section>
+                </section>
+            </section>
+            <section id="displayWeather" class="col-12 col-sm-8 col-md-9 ps-3">
+                <section id="todaysWeather" class="mt-3">
+                    <div id="todaysWeatherTitle" class="d-flex justify-content-around align-content-center">
+                        <div id="titleText">
+                            <h3 id="cityName">Corby</h3>
+                            <h3 id="todayDate">Mon 21st Dec</h3>
+                            <h6 id="updateTime">Last Updated: 07:35</h6>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <img id="mainWeatherIcon" src="images/weatherIcons/005-storm.png" alt="Weather Icon">
+                        </div>
+                    </div>
+                </section>
+                <h5 class="mt-3">Five Day Forecast:</h5>
+                <section id="fiveDayForecast" class="mt-3 col-12 d-flex flex-wrap">
+                    <div class="card text-bg-primary col-6 col-md-4 col-lg-2">
+
+                    </div>
+                    <div class="card text-bg-primary col-6 col-md-4 col-lg-2">
+
+                    </div>
+                    <div class="card text-bg-primary col-6 col-md-4 col-lg-2">
+
+                    </div>
+                    <div class="card text-bg-primary col-6 col-md-4 col-lg-2">
+
+                    </div>
+                    <div class="card text-bg-primary col-6 col-md-4 col-lg-2">
+
+                    </div>
+                    <div class="card text-bg-primary col-6 col-md-4 col-lg-2">
+
+                    </div>
+                </section>
+            </section>
+        </div>
     </main>
+
     <footer>
 
     </footer>
