@@ -24,7 +24,7 @@ button {
 i {
     color: white;
     font-size: 1.2rem;
-    text-shadow: 3px 3px 3px rgb(16, 16, 134);
+    
 }
 
 hr {
@@ -65,7 +65,6 @@ hr {
 }
 
 #fiveDayForecast .card{
-    height: 200px;
     border: 2px solid white;
 }
 
@@ -96,4 +95,14 @@ hr {
     font-size: 0.7rem;
     font-weight: bold;
     margin-top: -12px;
+    text-align: center;
+}
+
+.smallWeatherIcons {
+    width: 28px;
+}
+
+.smallText {
+    font-size: 0.8rem;
+    text-shadow: 2px 2px 2px rgb(16, 16, 134);
 }
