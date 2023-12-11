@@ -45,11 +45,55 @@ hr {
 }
 
 #todaysWeather {
-    background-color: black;
-    height: 250px;
+    background-image: url(../images/cumulus-cloud.jpg);
+    background-size: cover;
+    color: rgb(11, 0, 168);
+    text-shadow: 2px 2px 3px rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+#cityName {
+    font-size: 1.4rem;
+}
+
+#todayDate {
+    font-size: 1rem;
+}
+
+#updateTime {
+    font-size: 0.7rem;
 }
 
 #fiveDayForecast .card{
     height: 200px;
     border: 2px solid white;
+}
+
+#mainWeatherIconBox {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.todaysWeatherDetailsIcons {
+    width: 100%;
+    max-width: 64px;
+    padding: 4px;
+}
+
+.detailsImageBox {
+    background-color: rgba(17, 0, 172, 0.8);
+    border-radius: 50%;
+    max-width: 64px;
+}
+
+.detailsInfo {
+    font-weight: bolder;
+    margin-top: 5px;
+}
+
+.detailsLabel {
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-top: -12px;
 }
