@@ -13,19 +13,24 @@ for (let i = 10; i < searchHistory.length; i++) {
 }
 
 cityInputBtn.on('click', function() {
+    searchCity = cityInput.val();
+    setLocationData()
+});
+
+function setLocationData() {
     // Prevent Empty Buttons Being Created
     if ( cityInput.val() != '') {
         // Prevent Duplicate Buttons Being Created
         let checks = $.inArray(cityInput.val(), searchHistory);
         if ( checks < 0 ) {
-            searchCity = cityInput.val();
             addCity(searchCity);
             cityInput.value('');
             addCityButtons();
         }
     }
-});
+}
 
+console.log(searchCity);
 // Using unshift to add to beginning of array so latest search stays on top
 function addCity(searchCity) {
     searchHistory.unshift(searchCity);
@@ -41,17 +46,37 @@ for (let i = 0; i < searchHistory.length; i++) {
 }
 
 // TODO: STEP 2: Using Latest Search item, Get Todays Weather Details
+
+// let fullWeatherData;
+// let lat;
+// let lon;
+// let url;
+
+// let weatherData;
+
+//     url = 'https://api.openweathermap.org/data/2.5/weather?q=' + searchCity + ',uk&APPID=' + apiKey;
+//     data = fetch(url)
+//         .then(function (response) {
+//             return response.json();
+//         }).then(function (data) {
+//             weatherData = data;
+//             return(data);
+//         });   
+
+
+// //getWeatherData('London');
+// console.log(weatherData)
 const apiKey = '439db1f08b48933364bec16a500bd22f';
-const url = 'api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=' + apiKey;
 
-fetch(url)
-    .then(function (response) {
-        return response.json();
-    }).then(function (data) {
-        console.log(data);  
-    });
+function fetchWeather(queryCity) {
+    let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + searchHistory[0] + ',uk&APPID=' + apiKey;
 
-console.log(url);
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+}
+
+fetchWeather();
 
 // TODO: Display Todays Relevant Weather Icon
 
