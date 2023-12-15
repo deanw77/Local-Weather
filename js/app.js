@@ -1,93 +1,115 @@
-// STEP 1: Get city search item, Store in LS, Auto Generate Recent Searches
-const cityInput = $('#cityInput');
-const cityInputBtn = $('#cityInputBtn');
-const itemsList = $('#itemsList');
-
-// Check if local storage exists for search history, is so get it, if not create empty array.
-let searchHistory = localStorage.getItem("searchHistory") ? JSON.parse(localStorage.getItem("searchHistory")) : [];
-let searchCity;
-
-// Prevent Button History Count exceeding 10;
-for (let i = 10; i < searchHistory.length; i++) {
-    searchHistory.pop();
-}
-
-cityInputBtn.on('click', function() {
-    searchCity = cityInput.val();
-    setLocationData()
-});
-
-function setLocationData() {
-    // Prevent Empty Buttons Being Created
-    if ( cityInput.val() != '') {
-        // Prevent Duplicate Buttons Being Created
-        let checks = $.inArray(cityInput.val(), searchHistory);
-        if ( checks < 0 ) {
-            addCity(searchCity);
-            cityInput.value('');
-            addCityButtons();
-        }
-    }
-}
-
-console.log(searchCity);
-// Using unshift to add to beginning of array so latest search stays on top
-function addCity(searchCity) {
-    searchHistory.unshift(searchCity);
-    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-} 
-
-// Create the Search History Buttons
-for (let i = 0; i < searchHistory.length; i++) {
-    let newBtn = $('<div>');
-    newBtn.addClass("col-6 col-sm-12 btn bg-primary");
-    newBtn.text(searchHistory[i]);
-    itemsList.append(newBtn);
-}
-
-// TODO: STEP 2: Using Latest Search item, Get Todays Weather Details
-
-// let fullWeatherData;
+// // STEP 1: Get city search item, Store in LS, Auto Generate Recent Searches
+// const cityInput = $('#cityInput');
+// const cityInputBtn = $('#cityInputBtn');
+// const itemsList = $('#itemsList');
 // let lat;
 // let lon;
-// let url;
 
-// let weatherData;
+// // Check if local storage exists for search history, is so get it, if not create empty array.
+// let searchHistory = localStorage.getItem("searchHistory") ? JSON.parse(localStorage.getItem("searchHistory")) : [];
+// let searchCity;
 
-//     url = 'https://api.openweathermap.org/data/2.5/weather?q=' + searchCity + ',uk&APPID=' + apiKey;
-//     data = fetch(url)
-//         .then(function (response) {
-//             return response.json();
-//         }).then(function (data) {
-//             weatherData = data;
-//             return(data);
-//         });   
+// // Prevent Button History Count exceeding 10;
+// for (let i = 10; i < searchHistory.length; i++) {
+//     searchHistory.pop();
+// }
 
+// cityInputBtn.on('click', function(event) {
+// event.preventDefault();
 
-// //getWeatherData('London');
-// console.log(weatherData)
-const apiKey = '439db1f08b48933364bec16a500bd22f';
+//     searchCity = cityInput.val();
+//     setLocationData()
+// });
 
-function fetchWeather(queryCity) {
-    let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + searchHistory[0] + ',uk&APPID=' + apiKey;
+// function setLocationData() {
+//     // Prevent Empty Buttons Being Created
+//     if ( cityInput.val() != '') {
+//         // Prevent Duplicate Buttons Being Created
+//         let checks = $.inArray(cityInput.val(), searchHistory);
+//         if ( checks < 0 ) {
+//             addCity(searchCity);
+            
+//             //addCityButtons();
+//             cityInput.value('');
+//         }
+//         geoCode(cityInput.val())
+//     }
+// }
 
-    fetch(url)
-        .then((response) => response.json())
-        .then((data) => console.log(data));
-}
+// // Using unshift to add to beginning of array so latest search stays on top
+// function addCity(searchCity) {
+//     searchHistory.unshift(searchCity);
+//     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+// } 
 
-fetchWeather();
+// // Create the Search History Buttons
+// for (let i = 0; i < searchHistory.length; i++) {
+//     let newBtn = $('<div>');
+//     newBtn.addClass("col-6 col-sm-12 btn bg-primary");
+//     newBtn.text(searchHistory[i]);
+//     itemsList.append(newBtn);
+// }
 
-// TODO: Display Todays Relevant Weather Icon
+// const apiKey = '439db1f08b48933364bec16a500bd22f';
 
-// TODO: Display Todays Weather Data
+// function geoCode(searchCity) {
+//     let url = 'http://api.openweathermap.org/geo/1.0/direct?'
+//     let city = searchCity;
+//     let limit = 10;
+//     let queryURL = url + 'q=' + city + "&limit=" + limit + '&appid=' + apiKey;
 
-// TODO: Using Latest Search item, Get the five day forecast
+//     fetch(queryURL)
+//         .then((response) => response.json())
+//         .then(function (data) {
+//             if ( data.length > 0 ) {
+//                 $('#modal').css("display", "block");
+//                 $('#overlay').css("display", "block");
+//                 for (let i = 0; i < data.length; i++) {
+//                     let div = $('<tr>')
+//                     div.addClass("d-flex col-12 justify-content-around align-items-center justify-items-around mb-2 flex-wrap")
+// ;
+//                     let cityName = $('<td>').addClass("col-3 mt-2").text(data[i].name);
+//                     let state = $('<td>').addClass("col-3 mt-2").text(data[i].state);
+//                     let country = $('<td>').addClass("col-3 mt-2").text(data[i].country);
+//                     let button = $('<td>').addClass("col-3 mt-2").text("Select");
+//                     button.attr("data-lat", data[i].lat);
+//                     button.attr("data-lon", data[i].lon);
+//                     button.addClass("btn btn-primary p-0 mt-2");
 
-// TODO: Update the days starting from tomorrow
+//                     div.append(cityName, state, country, button)
+//                     $('#citySelection').append(div)
+//                 }
+//                 $('.btn').on('click', function() {
+//                     lat = this.dataset.lat
+//                     lon = this.dataset.lon
+//                     console.log(lat)
+//                     console.log(lon) 
+//                 });
 
-// TODO: Update each Daily Weather Icon
+//                 // console.log(lat)
+//                 // console.log(lon) 
+//             } else {
 
-// TODO: Update daily data for the five day
+//             }
+//         });  
+        
+           
+// }
 
-// TODO: Fill in the final box with some kind of summary
+// //geoCode(searchCity);
+
+// // function fetchWeather(queryCity) {
+// //     let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + searchHistory[0] + ',uk&APPID=' + apiKey;
+
+// //     fetch(url)
+// //         .then((response) => response.json())
+// //         .then(function (data) {
+// //             $('#cityName').text(data.name);
+// //             $('#tempLabel').text(((data.main.temp)-273.15).toFixed(0) + "°C");
+// //             console.log(data)
+// //         });
+// // }
+
+// // fetchWeather();
+
+// // https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={API key}
