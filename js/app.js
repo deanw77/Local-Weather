@@ -109,6 +109,22 @@ $('.historyButton').on('click', function () {
     setLocationData($(this).text(), this.dataset.country);
 });
 
+// Display Weather for Current Location
+$('#currentLocation').on('click', function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(locationSuccess);
+    } else {
+        $("#locationData").html('Your browser does not support location data retrieval.');
+    }
+});
+
+function locationSuccess(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    $("#locationData").html("Latitude: " + latitude + "<br>Longitude: " + longitude);
+    fetchWeather(latitude, longitude)
+}
+
 function displayWeather(data) {
     console.log(data)
 }
