@@ -39,17 +39,16 @@
         <section class="mt-2 container">
             <form class="d-flex flex-wrap justify-content-between  col-12 col-sm-4 col-md-3">
                 <input id="searchCityMenu" class="col-12 mb-2" type="text">
-                <select id="country" class="col-6 p-1" name="country">
+                <select id="country" class="col-8 p-1" name="country">
                     <!-- Insert All Countries With JavaScript -->
                 </select>
                 <button id="cityInputBtn" class="col-3 bg-primary rounded text-light"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
             <hr class="col-12 col-sm-4 col-md-3">
             <ol class="text-light list-group mb-2 col-12 col-sm-4 col-md-3">
-                <li class="btn btn-primary">Current Location <i class="fa-solid fa-location-crosshairs"></i></li>
+                <li id="currentLocation" class="btn btn-primary">Current Location <i class="fa-solid fa-location-crosshairs"></i></li>
             </ol>
-            <ol class="text-light list-group col-12 col-sm-4 col-md-3">
-                <li class="btn btn-primary">London</i></li>
+            <ol id="searchItems" class="text-light list-group col-12 col-sm-4 col-md-3">
             </ol>
         </section>
 

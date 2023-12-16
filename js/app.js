@@ -1,115 +1,121 @@
-// // STEP 1: Get city search item, Store in LS, Auto Generate Recent Searches
-// const cityInput = $('#cityInput');
-// const cityInputBtn = $('#cityInputBtn');
-// const itemsList = $('#itemsList');
-// let lat;
-// let lon;
+// STEP 1: Get city search item, Store in LS, Auto Generate Recent Searches
+const apiKey = '439db1f08b48933364bec16a500bd22f';
+const cityInput = $('#searchCityMenu');
+const countryInput = $('#country');
+const cityInputBtn = $('#cityInputBtn');
+const itemsList = $('#searchItems');
+const currentLocation = $('#currentLocation');
 
-// // Check if local storage exists for search history, is so get it, if not create empty array.
-// let searchHistory = localStorage.getItem("searchHistory") ? JSON.parse(localStorage.getItem("searchHistory")) : [];
-// let searchCity;
+// Check if local storage exists for search history, is so get it, if not create empty array.
+let searchHistory = localStorage.getItem("searchHistory") ? JSON.parse(localStorage.getItem("searchHistory")) : [];
+let searchHistoryCountry = localStorage.getItem("searchHistoryCountry") ? JSON.parse(localStorage.getItem("searchHistoryCountry")) : [];
+let searchCity;
+let searchCountry;
 
-// // Prevent Button History Count exceeding 10;
-// for (let i = 10; i < searchHistory.length; i++) {
-//     searchHistory.pop();
-// }
+// Prevent Button History Count exceeding 10;
+for (let i = 9; i < searchHistory.length; i++) {
+    searchHistory.pop();
+    searchHistoryCountry.pop();
+}
+// Create Initial History Button List 
+createHistButtons(searchHistory, searchHistoryCountry);
 
-// cityInputBtn.on('click', function(event) {
-// event.preventDefault();
+// On Click, Check For blank entry or duplicat then:
+// Add the city and country to local storage and re-run create hist buttons function
+cityInputBtn.on('click', function(event) {
+    event.preventDefault();
 
-//     searchCity = cityInput.val();
-//     setLocationData()
-// });
-
-// function setLocationData() {
-//     // Prevent Empty Buttons Being Created
-//     if ( cityInput.val() != '') {
-//         // Prevent Duplicate Buttons Being Created
-//         let checks = $.inArray(cityInput.val(), searchHistory);
-//         if ( checks < 0 ) {
-//             addCity(searchCity);
-            
-//             //addCityButtons();
-//             cityInput.value('');
-//         }
-//         geoCode(cityInput.val())
-//     }
-// }
+    if ( cityInput.val() != '') {
+        // Prevent Duplicate Buttons Being Created
+        let newsearch = cityInput.val().toUpperCase();
+        let arrayCheck = searchHistory.map(function(x){ return x.toUpperCase(); })
+        searchCity = cityInput.val();   
+        searchCountry = countryInput.val();
+        let checks = $.inArray(newsearch, arrayCheck);
+        if ( checks < 0 ) {
+            addCity(searchCity, searchCountry);
+            createHistButtons(searchHistory, searchHistoryCountry);
+        }  
+        setLocationData(searchCity, searchCountry); 
+    }
+    cityInput.val(''); 
+});
 
 // // Using unshift to add to beginning of array so latest search stays on top
-// function addCity(searchCity) {
-//     searchHistory.unshift(searchCity);
-//     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-// } 
+function addCity(searchCity, searchCountry) {
+    searchHistory.unshift(searchCity);
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    searchHistoryCountry.unshift(searchCountry);
+    localStorage.setItem("searchHistoryCountry", JSON.stringify(searchHistoryCountry));
+} 
 
-// // Create the Search History Buttons
-// for (let i = 0; i < searchHistory.length; i++) {
-//     let newBtn = $('<div>');
-//     newBtn.addClass("col-6 col-sm-12 btn bg-primary");
-//     newBtn.text(searchHistory[i]);
-//     itemsList.append(newBtn);
-// }
+function createHistButtons(searchHistory, searchHistoryCountry) {   
+    itemsList.empty()      
+    for(let i = 0; i < searchHistory.length; i++){
+        let newButton = $('<li>');
+        newButton.attr("data-country", searchHistoryCountry[i]).text(searchHistory[i]);
+        newButton.addClass("btn btn-primary mb-2 historyButton");
+        itemsList.append(newButton);
+    }     
+}
 
-// const apiKey = '439db1f08b48933364bec16a500bd22f';
+function setLocationData(city, country) {
+    const url = 'http://api.openweathermap.org/geo/1.0/direct?';
+    let cityName = 'q=' + city;
+    let countryCode = ',' + country;
+    const myAPI = '&appid=' + apiKey
+    let queryURL = url + cityName + countryCode + myAPI;
 
-// function geoCode(searchCity) {
-//     let url = 'http://api.openweathermap.org/geo/1.0/direct?'
-//     let city = searchCity;
-//     let limit = 10;
-//     let queryURL = url + 'q=' + city + "&limit=" + limit + '&appid=' + apiKey;
+    let lat;
+    let lon;
 
-//     fetch(queryURL)
-//         .then((response) => response.json())
-//         .then(function (data) {
-//             if ( data.length > 0 ) {
-//                 $('#modal').css("display", "block");
-//                 $('#overlay').css("display", "block");
-//                 for (let i = 0; i < data.length; i++) {
-//                     let div = $('<tr>')
-//                     div.addClass("d-flex col-12 justify-content-around align-items-center justify-items-around mb-2 flex-wrap")
-// ;
-//                     let cityName = $('<td>').addClass("col-3 mt-2").text(data[i].name);
-//                     let state = $('<td>').addClass("col-3 mt-2").text(data[i].state);
-//                     let country = $('<td>').addClass("col-3 mt-2").text(data[i].country);
-//                     let button = $('<td>').addClass("col-3 mt-2").text("Select");
-//                     button.attr("data-lat", data[i].lat);
-//                     button.attr("data-lon", data[i].lon);
-//                     button.addClass("btn btn-primary p-0 mt-2");
+    fetch(queryURL)
+        .then((response) => response.json())
+        .then(function (data) {
+            lat = data[0].lat;
+            lon = data[0].lon;
+            fetchWeather(lat, lon)
+        })
+        .catch(() => {
+            errorActions();
+        });
+}
 
-//                     div.append(cityName, state, country, button)
-//                     $('#citySelection').append(div)
-//                 }
-//                 $('.btn').on('click', function() {
-//                     lat = this.dataset.lat
-//                     lon = this.dataset.lon
-//                     console.log(lat)
-//                     console.log(lon) 
-//                 });
+function errorActions() {
+    alert("Location not found. \nPlease check country searched."); 
+    searchHistory.shift();
+    searchHistoryCountry.shift();
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    localStorage.setItem("searchHistoryCountry", JSON.stringify(searchHistoryCountry));
+    createHistButtons(searchHistory, searchHistoryCountry)
+}
 
-//                 // console.log(lat)
-//                 // console.log(lon) 
-//             } else {
+function fetchWeather(lat, lon) {
+    let url = 'https://api.openweathermap.org/data/3.0/onecall?';
+    let latitude = "lat=" + lat;
+    let longitude = "&lon=" + lon;
+    const myAPI = '&appid=' + apiKey;
+    let queryURL = url + latitude + longitude + myAPI;
 
-//             }
-//         });  
-        
-           
-// }
+    fetch(queryURL)
+        .then((response) => response.json())
+        .then(function (data) {
+            displayWeather(data)
+        });
+}
 
-// //geoCode(searchCity);
+// Display Weather for Stored Buttons
+$('.historyButton').on('click', function () {
+    setLocationData($(this).text(), this.dataset.country);
+});
 
-// // function fetchWeather(queryCity) {
-// //     let url = 'https://api.openweathermap.org/data/2.5/weather?q=' + searchHistory[0] + ',uk&APPID=' + apiKey;
+function displayWeather(data) {
+    console.log(data)
+}
 
-// //     fetch(url)
-// //         .then((response) => response.json())
-// //         .then(function (data) {
-// //             $('#cityName').text(data.name);
-// //             $('#tempLabel').text(((data.main.temp)-273.15).toFixed(0) + "°C");
-// //             console.log(data)
-// //         });
-// // }
 
-// // fetchWeather();
 
-// // https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={API key}
+
+
+
+// https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={API key}
