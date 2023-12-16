@@ -5,6 +5,7 @@ const countryInput = $('#country');
 const cityInputBtn = $('#cityInputBtn');
 const itemsList = $('#searchItems');
 const currentLocation = $('#currentLocation');
+const cards = $('#fiveDayForecast');
 
 // Check if local storage exists for search history, is so get it, if not create empty array.
 let searchHistory = localStorage.getItem("searchHistory") ? JSON.parse(localStorage.getItem("searchHistory")) : [];
@@ -74,7 +75,7 @@ function setLocationData(city, country) {
         .then(function (data) {
             lat = data[0].lat;
             lon = data[0].lon;
-            fetchWeather(lat, lon)
+            fetchWeather(lat, lon, city);
         })
         .catch(() => {
             errorActions();
@@ -90,7 +91,7 @@ function errorActions() {
     createHistButtons(searchHistory, searchHistoryCountry)
 }
 
-function fetchWeather(lat, lon) {
+function fetchWeather(lat, lon, city) {
     let url = 'https://api.openweathermap.org/data/3.0/onecall?';
     let latitude = "lat=" + lat;
     let longitude = "&lon=" + lon;
@@ -100,7 +101,8 @@ function fetchWeather(lat, lon) {
     fetch(queryURL)
         .then((response) => response.json())
         .then(function (data) {
-            displayWeather(data)
+            displayWeather(data, city)
+            fiveDayWeather(data);
         });
 }
 
@@ -122,16 +124,67 @@ function locationSuccess(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
     $("#locationData").html("Latitude: " + latitude + "<br>Longitude: " + longitude);
+    $('.cityName').text('');
     fetchWeather(latitude, longitude)
 }
 
-function displayWeather(data) {
-    console.log(data)
+// ---- Button Functionality Complete ----
+
+// ---- Display the Weather to Page   ----
+// Display the current date
+const currentDay = $("#currentDay");
+const currentDate = dayjs(); 
+const formattedDate = currentDate.format('dddd[,] MMMM D'); 
+const day = parseInt(currentDate.format('D'));
+// Switch statement to get the correct suffix for date
+const nthNumber = (D) => {
+    if (D > 3 && D < 21) return 'th';
+    switch (D % 10) {
+      case 1:  return "st";
+      case 2:  return "nd";
+      case 3:  return "rd";
+      default: return "th";
+    }
+};
+
+function displayWeather(data, city) {
+    $('#todaysWeather').removeClass("invisible");
+    $('.cityName').text(city);
+    $('.date').text(formattedDate + nthNumber(day));
+    let icon = 'https://openweathermap.org/img/w/' + data.current.weather[0].icon + '.png';
+    $('.weatherIcon').attr("src", icon);
+    $('.weatherIcon').removeClass("invisible");
+    $('.weatherSummary').text(data.current.weather[0].description).css('textTransform', 'capitalize');
+    let temp = (data.current.temp - 273.15).toFixed(0);
+    $('#temperature').text(temp + "°C");
+    $('#windSpeed').text((data.current.wind_speed).toFixed(1) + "K/ph");
+    $('#humidity').text(data.current.humidity + "%");
+
+    let unixSunrise = dayjs.unix(data.current.sunrise);
+    $("#sunrise").text(unixSunrise.format('HH[:]MM'));
+    let unixSunset = dayjs.unix(data.current.sunset);
+    $("#sunset").text(unixSunset.format('H[:]MM'));
 }
 
+function fiveDayWeather(data) {
+    for (let i = 1; i < 6; i++) {
+        let newCard = $('<div>');
+        newCard.attr("id", "card"+ [i]);
+        newCard.addClass("card col-6  col-sm-2 text-center mt-2 p-1 bg-primary text-white border-2 border-white");
+        let day = $("<h6>");
+        day.addClass("card-header")
+        let unixDay = dayjs.unix(data.daily[i].sunrise);
+        let days = parseInt(unixDay.format('D'));
+        day.text(unixDay.format('ddd D') + nthNumber(days));
+        
 
 
 
 
 
-// https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={API key}
+        newCard.append(day)
+
+        cards.append(newCard);     
+    }
+    console.log(data)
+}
