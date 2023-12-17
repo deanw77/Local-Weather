@@ -112,11 +112,7 @@ function fetchWeather(lat, lon, city) {
 // Display Weather for Stored Buttons
 $('#searchItems').on('click', '.historyButton', function (event) {
     event.preventDefault();
-
     setLocationData($(this).text(), this.dataset.country);
-    //location.reload();
-    
-    console.log(this)
 });
 
 // Display Weather for Current Location
