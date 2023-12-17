@@ -161,10 +161,12 @@ function displayWeather(data, city) {
     $('#windSpeed').text((data.current.wind_speed).toFixed(1) + " km/h");
     $('#humidity').text(data.current.humidity + "%");
 
-    let unixSunrise = dayjs.unix(data.current.sunrise);
+    let timezoneOffset = data.timezone_offset;
+    let unixSunrise = dayjs.unix((data.current.sunrise) + timezoneOffset);
     $("#sunrise").text(unixSunrise.format('HH[:]MM'));
-    let unixSunset = dayjs.unix(data.current.sunset);
+    let unixSunset = dayjs.unix((data.current.sunset) + timezoneOffset);
     $("#sunset").text(unixSunset.format('H[:]MM'));
+    console.log(data)
 }
 
 function fiveDayWeather(data) {
