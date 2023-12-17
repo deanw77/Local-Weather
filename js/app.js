@@ -13,6 +13,8 @@ let searchHistoryCountry = localStorage.getItem("searchHistoryCountry") ? JSON.p
 let searchCity;
 let searchCountry;
 
+setLocationData(searchHistory[0], searchHistoryCountry[0])
+
 // Prevent Button History Count exceeding 10;
 for (let i = 9; i < searchHistory.length; i++) {
     searchHistory.pop();
@@ -36,10 +38,11 @@ cityInputBtn.on('click', function(event) {
         if ( checks < 0 ) {
             addCity(searchCity, searchCountry);
             createHistButtons(searchHistory, searchHistoryCountry);
+            
         }  
         setLocationData(searchCity, searchCountry); 
     }
-    cityInput.val(''); 
+    cityInput.val('');
 });
 
 // // Using unshift to add to beginning of array so latest search stays on top
@@ -48,7 +51,7 @@ function addCity(searchCity, searchCountry) {
     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
     searchHistoryCountry.unshift(searchCountry);
     localStorage.setItem("searchHistoryCountry", JSON.stringify(searchHistoryCountry));
-} 
+}
 
 function createHistButtons(searchHistory, searchHistoryCountry) {   
     itemsList.empty()      
@@ -57,7 +60,7 @@ function createHistButtons(searchHistory, searchHistoryCountry) {
         newButton.attr("data-country", searchHistoryCountry[i]).text(searchHistory[i]);
         newButton.addClass("btn btn-primary mb-2 historyButton");
         itemsList.append(newButton);
-    }     
+    } 
 }
 
 function setLocationData(city, country) {
@@ -103,12 +106,17 @@ function fetchWeather(lat, lon, city) {
         .then(function (data) {
             displayWeather(data, city)
             fiveDayWeather(data);
-        });
+        });   
 }
 
 // Display Weather for Stored Buttons
-$('.historyButton').on('click', function () {
+$('#searchItems').on('click', '.historyButton', function (event) {
+    event.preventDefault();
+
     setLocationData($(this).text(), this.dataset.country);
+    //location.reload();
+    
+    console.log(this)
 });
 
 // Display Weather for Current Location
@@ -166,16 +174,10 @@ function displayWeather(data, city) {
     $("#sunrise").text(unixSunrise.format('HH[:]MM'));
     let unixSunset = dayjs.unix((data.current.sunset) + timezoneOffset);
     $("#sunset").text(unixSunset.format('H[:]MM'));
-    console.log(data)
 }
 
 function fiveDayWeather(data) {
     cards.empty();
-    const imageArray = [
-        "images/weatherIcons/013-thermometer.png",
-        "",
-        ""
-    ];
 
     for (let i = 1; i < 6; i++) {
         let newCard = $('<div>');
@@ -217,10 +219,10 @@ function fiveDayWeather(data) {
         humidityImage.attr("style", "width:24px; margin-right:2px;");
         let humidity = $('<h6>').text(data.daily[i].humidity + "%");
         humidityDiv.append(humidityImage, humidity)
-        
 
         newCard.append(day, newIcon, summary, tempDiv, windDiv, humidityDiv);
 
         cards.append(newCard);     
     }
+    
 }
