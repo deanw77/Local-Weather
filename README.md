@@ -20,6 +20,7 @@ A weather app that fethces data from Open-Weather API and displays current weath
 5) Also added Sunrise and Sunset details, using dayjs to parse the unix time and timezone offset to ensure it adjusts to time to the search cities local time.
 6) Added a country dropdown menu that defaults to UK and uses a seperate countries.js file to store country data and populate dropdown list.
 7) Built primarily with Bootstrap since I needed to improve my Bootstrap skills before first project.
+8) Finally, I added a reverse geoloaction api call to add city name when current location is used. 
 
 ## Hosted Site
 
