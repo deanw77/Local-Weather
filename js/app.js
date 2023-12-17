@@ -78,6 +78,7 @@ function setLocationData(city, country) {
         .then(function (data) {
             lat = data[0].lat;
             lon = data[0].lon;
+            console.log(data)
             fetchWeather(lat, lon, city);
         })
         .catch(() => {
@@ -127,11 +128,16 @@ $('#currentLocation').on('click', function() {
 
 // If can get current location, display weather
 function locationSuccess(position) {
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    $("#locationData").html("Latitude: " + latitude + "<br>Longitude: " + longitude);
-    $('.cityName').text('');
-    fetchWeather(latitude, longitude)
+    let latitude = position.coords.latitude;
+    let longitude = position.coords.longitude;
+    let city;
+    let queryURL = "http://api.openweathermap.org/geo/1.0/reverse?lat=" + latitude + "&lon="+ longitude+ "&appid=" + apiKey;
+    fetch(queryURL)
+        .then((response) => response.json())
+        .then(function (data) {
+            city = data[0].local_names.en;
+            fetchWeather(latitude, longitude, city);
+        })
 }
 
 // ---- Button Functionality Complete ----
