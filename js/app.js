@@ -154,7 +154,7 @@ function displayWeather(data, city) {
     let icon = 'https://openweathermap.org/img/w/' + data.current.weather[0].icon + '.png';
     $('.weatherIcon').attr("src", icon);
     $('.weatherIcon').removeClass("invisible");
-    $('.weatherIcon').attr("style", "width:100px;");
+    $('.weatherIcon').attr("style", "width:120px;");
     $('.weatherSummary').text(data.current.weather[0].description).css('textTransform', 'capitalize');
     let temp = (data.current.temp - 273.15).toFixed(0);
     $('#temperature').text(temp + "°C");
@@ -195,7 +195,7 @@ function fiveDayWeather(data) {
         let summary = $('<h6>').text(data.daily[i].weather[0].main);
 
         let tempDiv = $('<div>')
-        tempDiv.addClass("d-flex justify-content-around align-items-center");
+        tempDiv.addClass("d-flex justify-content-between align-items-center col-11 m-auto");
         let tempImage = $('<img>');
         tempImage.attr("src", "images/weatherIcons/013-thermometer.png");
         tempImage.attr("style", "width:32px;");
@@ -203,7 +203,7 @@ function fiveDayWeather(data) {
         tempDiv.append(tempImage, temp)
 
         let windDiv = $('<div>')
-        windDiv.addClass("d-flex justify-content-around align-items-center");
+        windDiv.addClass("d-flex justify-content-between align-items-center col-11 m-auto");
         let windImage = $('<img>');
         windImage.attr("src", "images/weatherIcons/008-wind.png");
         windImage.attr("style", "width:24px; margin-right:2px;");
@@ -211,7 +211,7 @@ function fiveDayWeather(data) {
         windDiv.append(windImage, wind)
 
         let humidityDiv = $('<div>')
-        humidityDiv.addClass("d-flex justify-content-around align-items-center");
+        humidityDiv.addClass("d-flex justify-content-between align-items-center col-11 m-auto");
         let humidityImage = $('<img>');
         humidityImage.attr("src", "images/weatherIcons/012-humidity.png");
         humidityImage.attr("style", "width:24px; margin-right:2px;");
