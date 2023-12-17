@@ -13,8 +13,6 @@ let searchHistoryCountry = localStorage.getItem("searchHistoryCountry") ? JSON.p
 let searchCity;
 let searchCountry;
 
-setLocationData(searchHistory[0], searchHistoryCountry[0])
-
 // Prevent Button History Count exceeding 10;
 for (let i = 9; i < searchHistory.length; i++) {
     searchHistory.pop();
@@ -53,6 +51,7 @@ function addCity(searchCity, searchCountry) {
     localStorage.setItem("searchHistoryCountry", JSON.stringify(searchHistoryCountry));
 }
 
+// Create the buttons for Search History and append
 function createHistButtons(searchHistory, searchHistoryCountry) {   
     itemsList.empty()      
     for(let i = 0; i < searchHistory.length; i++){
@@ -63,6 +62,7 @@ function createHistButtons(searchHistory, searchHistoryCountry) {
     } 
 }
 
+// Use API to get lat and lon for chosen city
 function setLocationData(city, country) {
     const url = 'https://api.openweathermap.org/geo/1.0/direct?';
     let cityName = 'q=' + city;
@@ -85,15 +85,16 @@ function setLocationData(city, country) {
         });
 }
 
+// If error occurs take action to prevent button being created
 function errorActions() {
     alert("Location not found. \nPlease check country searched."); 
     searchHistory.shift();
     searchHistoryCountry.shift();
     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
     localStorage.setItem("searchHistoryCountry", JSON.stringify(searchHistoryCountry));
-    createHistButtons(searchHistory, searchHistoryCountry)
 }
 
+// fetch the weather data with lat and lon
 function fetchWeather(lat, lon, city) {
     let url = 'https://api.openweathermap.org/data/3.0/onecall?';
     let latitude = "lat=" + lat;
@@ -124,6 +125,7 @@ $('#currentLocation').on('click', function() {
     }
 });
 
+// If can get current location, display weather
 function locationSuccess(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
@@ -172,6 +174,7 @@ function displayWeather(data, city) {
     $("#sunset").text(unixSunset.format('H[:]MM'));
 }
 
+// Create the five day weather cards
 function fiveDayWeather(data) {
     cards.empty();
 
@@ -220,5 +223,4 @@ function fiveDayWeather(data) {
 
         cards.append(newCard);     
     }
-    
 }
