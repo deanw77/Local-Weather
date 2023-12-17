@@ -61,7 +61,7 @@ function createHistButtons(searchHistory, searchHistoryCountry) {
 }
 
 function setLocationData(city, country) {
-    const url = 'http://api.openweathermap.org/geo/1.0/direct?';
+    const url = 'https://api.openweathermap.org/geo/1.0/direct?';
     let cityName = 'q=' + city;
     let countryCode = ',' + country;
     const myAPI = '&appid=' + apiKey
