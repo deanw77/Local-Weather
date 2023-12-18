@@ -170,7 +170,7 @@ function displayWeather(data, city) {
     $('.weatherSummary').text(data.current.weather[0].description).css('textTransform', 'capitalize');
     let temp = (data.current.temp - 273.15).toFixed(0);
     $('#temperature').text(temp + "°C");
-    $('#windSpeed').text((data.current.wind_speed).toFixed(1) + " km/h");
+    $('#windSpeed').text(((data.current.wind_speed) * 3.6).toFixed(1) + " km/h");
     $('#humidity').text(data.current.humidity + "%");
 
     let timezoneOffset = data.timezone_offset;
@@ -214,7 +214,7 @@ function fiveDayWeather(data) {
         let windImage = $('<img>');
         windImage.attr("src", "images/weatherIcons/008-wind.png");
         windImage.attr("style", "width:24px; margin-right:2px;");
-        let wind = $('<h6>').text((data.daily[i].wind_speed).toFixed(1) + " km/h");
+        let wind = $('<h6>').text(((data.daily[i].wind_speed) * 3.6).toFixed(1) + " km/h");
         windDiv.append(windImage, wind)
 
         let humidityDiv = $('<div>')
