@@ -131,7 +131,7 @@ function locationSuccess(position) {
     let latitude = position.coords.latitude;
     let longitude = position.coords.longitude;
     let city;
-    let queryURL = "http://api.openweathermap.org/geo/1.0/reverse?lat=" + latitude + "&lon="+ longitude+ "&appid=" + apiKey;
+    let queryURL = "https://api.openweathermap.org/geo/1.0/reverse?lat=" + latitude + "&lon="+ longitude+ "&appid=" + apiKey;
     fetch(queryURL)
         .then((response) => response.json())
         .then(function (data) {
